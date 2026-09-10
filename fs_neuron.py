@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-
+import numpy as np
 
 def simulate_fs(I=10.0, T=300.0, dt=0.1):
     a, b, c, d = 0.1, 0.2, -65.0, 2.0
@@ -20,8 +20,13 @@ def simulate_fs(I=10.0, T=300.0, dt=0.1):
             u = u + d    # 刹车加力
     return ts, vs
 
-
 t, h = simulate_fs(I=10.0, T=300.0)
+
+h = np.array(h); t = np.array(t)
+peaks = t[h >= 30]                    # 所有发火时刻
+isi = np.diff(peaks)
+print(isi, isi.mean(), 1000/isi.mean(), "Hz")
+
 plt.plot(t, h)
 plt.xlabel("t (ms)")
 plt.ylabel("v (mV)")
